@@ -1,23 +1,29 @@
-import Image, { type ImageProps } from "next/image";
+"use client";
 
-import styles from "./page.module.css";
+import React, { useState } from "react";
+import { useSocket } from "../context/SocketProvider";
 
-type Props = Omit<ImageProps, "src"> & {
-   srcLight: string;
-   srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-   const { srcLight, srcDark, ...rest } = props;
+export default function page() {
+   const { sendMessage } = useSocket();
+   const [message, setMessage] = useState<string>("");
 
    return (
-      <>
-         <Image {...rest} src={srcLight} className="imgLight" />
-         <Image {...rest} src={srcDark} className="imgDark" />
-      </>
+      <div className="flex">
+         <div>
+            <input
+               placeholder="hello"
+               className="border"
+               onChange={(e) => setMessage(e.target.value)}
+            />
+            <button
+               className="border"
+               onClick={() => {
+                  sendMessage(message);
+               }}
+            >
+               hello
+            </button>
+         </div>
+      </div>
    );
-};
-
-export default function Home() {
-   return <div className={styles.page}>heklo</div>;
 }
